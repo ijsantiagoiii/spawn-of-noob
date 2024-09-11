@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddauq1vfwd25i"]
+
+[ext_resource type="Script" path="res://Scenes/player.gd" id="1_btmoh"]
+[ext_resource type="PackedScene" uid="uid://dovruv4tyo1e5" path="res://Scenes/projectile.tscn" id="2_kol62"]
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(-1, 0)
+script = ExtResource("1_btmoh")
+projectile_node = ExtResource("2_kol62")
