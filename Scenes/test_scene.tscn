@@ -6,3 +6,9 @@
 
 [node name="Player" parent="." instance=ExtResource("1_ffuda")]
 position = Vector2(551, 319)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(128, -37)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(177, 209, 302, 134, 519, 127, 480, 204)

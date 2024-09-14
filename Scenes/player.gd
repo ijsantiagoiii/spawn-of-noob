@@ -1,17 +1,74 @@
 extends CharacterBody2D
  
 @export var projectile_node : PackedScene
- 
-##Testing
-#func _ready():
-	#await get_tree().create_timer(1).timeout
-	#single_shot()
+
+
+
+
+###Player Movement & Collision : START
+#@export var max_speed = 300
+#@export var acceleration = 1500
+#@export var friction = 1200
+#
+#@onready var axis = Vector2.ZERO
+ #
+#func _physics_process(delta: float) -> void:
+	#move(delta)
 	#
-	#await get_tree().create_timer(1).timeout
-	#multi_shot()
+#func get_intpu_axis():
+	#axis.x = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
+	#axis.y = int(Input.is_action_pressed("move_down")) - int(Input.is_action_pressed("move_up"))
+	#return axis.normalized()
+#
+#func move(delta):
+	#axis = get_intpu_axis()
 	#
-	#await get_tree().create_timer(1).timeout
-	#radial(8)
+	#if axis == Vector2.ZERO:
+		#apply_friction(friction * delta)
+	#else:
+		#apply_movement(axis * acceleration * delta)
+		#
+	#move_and_slide()
+#
+#func apply_friction(amount):
+		#if velocity.length() > amount:
+			#velocity -= velocity.normalized() * amount
+		#else:
+			#velocity = Vector2.ZERO
+			#
+#func apply_movement(accel):
+	#velocity += accel
+	#velocity = velocity.limit_length(max_speed)
+###Player Movement & Collision : END
+
+
+
+
+
+##Player Movement by Mouse Click : START
+var speed = 300
+var click_position = Vector2()
+var target_position = Vector2()
+
+func _ready() -> void:
+	click_position = position
+
+func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("move_right_click"):
+		click_position = get_global_mouse_position()
+		
+	if position.distance_to(click_position) > 3:
+		target_position = (click_position - position).normalized()
+		velocity = target_position* speed
+		move_and_slide()
+		
+
+##Player Movement by Mouse Click : END
+
+
+
+
+
 
 func single_shot(animation_name = "Fire"):
 	var projectile = projectile_node.instantiate()
@@ -22,7 +79,6 @@ func single_shot(animation_name = "Fire"):
 	projectile.direction = (get_global_mouse_position() - global_position).normalized()
  
 	get_tree().current_scene.call_deferred("add_child",projectile)
- 
  
 func multi_shot(count: int = 3, delay: float = 0.3, animation_name = "Fire"):
 	for i in range(count):
@@ -41,7 +97,6 @@ func angled_shot(angle,i):
 	projectile.direction = Vector2(cos(angle),sin(angle))
  
 	get_tree().current_scene.call_deferred("add_child",projectile)
- 
  
 func radial(count):
 	for i in range(count):
