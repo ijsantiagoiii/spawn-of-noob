@@ -1,9 +1,44 @@
-[gd_scene load_steps=3 format=3 uid="uid://ddauq1vfwd25i"]
+[gd_scene load_steps=6 format=3 uid="uid://ddauq1vfwd25i"]
 
 [ext_resource type="Script" path="res://Scenes/player.gd" id="1_btmoh"]
 [ext_resource type="PackedScene" uid="uid://dovruv4tyo1e5" path="res://Scenes/projectile.tscn" id="2_kol62"]
+[ext_resource type="Texture2D" uid="uid://b12tcg1k38o6d" path="res://Assets/Characters/Original Color/Halberdier.png" id="3_u4wyi"]
+[ext_resource type="Script" path="res://Scenes/skill_bar.gd" id="4_6l7om"]
+[ext_resource type="PackedScene" uid="uid://dy5d81v4am6hu" path="res://Scenes/spell_button.tscn" id="4_wrbqm"]
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(-1, 0)
 script = ExtResource("1_btmoh")
 projectile_node = ExtResource("2_kol62")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_u4wyi")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="SkillBar" type="HBoxContainer" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -108.0
+offset_top = -40.0
+offset_right = 108.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("4_6l7om")
+
+[node name="SpellButton" parent="UI/SkillBar" instance=ExtResource("4_wrbqm")]
+layout_mode = 2
+
+[node name="SpellButton2" parent="UI/SkillBar" instance=ExtResource("4_wrbqm")]
+layout_mode = 2
+
+[node name="SpellButton3" parent="UI/SkillBar" instance=ExtResource("4_wrbqm")]
+layout_mode = 2
+
+[node name="SpellButton4" parent="UI/SkillBar" instance=ExtResource("4_wrbqm")]
+layout_mode = 2
+
+[node name="SpellButton5" parent="UI/SkillBar" instance=ExtResource("4_wrbqm")]
+layout_mode = 2

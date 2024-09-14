@@ -5,6 +5,8 @@ extends TextureButton
 @onready var time = $Time
 @onready var timer =$Timer
 
+var skill = null
+
 var change_key = "":
 	set(value):
 		change_key = value
@@ -26,12 +28,13 @@ func _process(_delta):
 	cooldown.value  = timer.time_left	
 
 func _on_pressed() -> void:
-	timer.start()
-	disabled = true
-	set_process(true)
+	if skill != null:
+		skill.cast_spell(owner)
+		
+		timer.start()
+		disabled = true
+		set_process(true)
 	
-
-
 func _on_timer_timeout() -> void:
 	disabled = false
 	time.text = ""
