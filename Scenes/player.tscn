@@ -1,21 +1,66 @@
-[gd_scene load_steps=7 format=3 uid="uid://ddauq1vfwd25i"]
+[gd_scene load_steps=11 format=3 uid="uid://ddauq1vfwd25i"]
 
 [ext_resource type="Script" path="res://Scenes/player.gd" id="1_btmoh"]
 [ext_resource type="PackedScene" uid="uid://dovruv4tyo1e5" path="res://Scenes/projectile.tscn" id="2_kol62"]
-[ext_resource type="Texture2D" uid="uid://b12tcg1k38o6d" path="res://Assets/Characters/Original Color/Halberdier.png" id="3_u4wyi"]
+[ext_resource type="Texture2D" uid="uid://jrm3ptpg5c7j" path="res://Assets/Characters/Shinobi/Samurai/Idle.png" id="3_1ieul"]
 [ext_resource type="Script" path="res://Scenes/skill_bar.gd" id="4_6l7om"]
 [ext_resource type="PackedScene" uid="uid://dy5d81v4am6hu" path="res://Scenes/spell_button.tscn" id="4_wrbqm"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bmme2"]
-radius = 17.0
-height = 60.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ih8v3"]
+size = Vector2(25, 71)
+
+[sub_resource type="Animation" id="Animation_fonkq"]
+resource_name = "idle"
+length = 0.500003
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_ix7ju"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_82n71"]
+resource_name = "walk"
+length = 0.700003
+loop_mode = 1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8sjgc"]
+_data = {
+"RESET": SubResource("Animation_ix7ju"),
+"idle": SubResource("Animation_fonkq"),
+"walk": SubResource("Animation_82n71")
+}
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_btmoh")
 projectile_node = ExtResource("2_kol62")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_u4wyi")
+texture = ExtResource("3_1ieul")
+hframes = 6
+frame = 1
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -49,5 +94,10 @@ layout_mode = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2(1, -1)
-shape = SubResource("CapsuleShape2D_bmme2")
+position = Vector2(-0.5, 22.5)
+shape = SubResource("RectangleShape2D_ih8v3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8sjgc")
+}
