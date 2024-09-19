@@ -1,99 +1,51 @@
 extends CharacterBody2D
  
 @export var projectile_node : PackedScene
+@export var speed = 250
+@export var gravity = 30
+@export var max_gforce = 1000
+@export var jump_force = -700
 
-
-
-
-##Player Movement & Collision : START
-@export var max_speed = 150
-@export var acceleration = 1500
-@export var friction = 1200
-
-
-
-@onready var axis = Vector2.ZERO
 @onready var ap = $AnimationPlayer
 @onready var sprite = $Sprite2D
  
 func _physics_process(delta: float) -> void:
-	move(delta)
-	
-func get_intpu_axis():
-	#var right = Input.is_action_pressed("move_right")
-	#var left = Input.is_action_pressed("move_left")
-	#
-	#if right:
-		#animation.play("walk")
-	#elif left:
-		#animation.play("walk")
-	#else:
-		#animation.play("idle")
-		
-	axis.x = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
-	axis.y = int(Input.is_action_pressed("move_down")) - int(Input.is_action_pressed("move_up"))
-	return axis.normalized()
-
-func move(delta):
-	axis = get_intpu_axis()
-	var h_direction = Input.get_axis("move_left","move_right")
-	
-	if h_direction!=0:
-		sprite.flip_h = (h_direction==-1)
-		
-	if axis == Vector2.ZERO:
-		apply_friction(friction * delta)
-	else:
-		apply_movement(axis * acceleration * delta)
-		
-	move_and_slide()
-
-func apply_friction(amount):
-		if velocity.length() > amount:
-			velocity -= velocity.normalized() * amount
-		else:
-			velocity = Vector2.ZERO
-			
-func apply_movement(accel):
-	velocity += accel
-	velocity = velocity.limit_length(max_speed)
+	pass
 	
 func _process(delta: float) -> void:
-	var right = Input.is_action_pressed("move_right")
-	var left = Input.is_action_pressed("move_left")
+	if !is_on_floor():
+		velocity.y += gravity
+		if velocity.y > max_gforce:
+			velocity.y = max_gforce
+
+	if Input.is_action_just_pressed("jump") && is_on_floor():
+		velocity.y = jump_force
+		ap.play("Jump")
 	
-	if right:
-		ap.play("Run")
-	elif left:
-		ap.play("Run")
+	var h_direction = Input.get_axis("move_left","move_right")
+	velocity.x = speed * h_direction
+	
+	if h_direction!=0:
+		switch_direction(h_direction)
+	
+	play_animation(h_direction)
+	move_and_slide()
+
+func play_animation(h_direction):
+	if is_on_floor():
+		if h_direction == 0:
+			ap.play("Idle")
+		else:
+			ap.play("Run")
 	else:
-		ap.play("Idle")
-##Player Movement & Collision : END
+		if velocity.y < 0:
+			ap.play("Jump")
+		else:
+			ap.play("Fall")
 
-
-
-
-
-###Player Movement by Mouse Click : START
-#var speed = 135
-#var click_position = Vector2()
-#var target_position = Vector2()
-#
-#func _ready() -> void:
-	#click_position = position
-#
-#func _physics_process(delta: float) -> void:
-	#if Input.is_action_just_pressed("move_right_click"):
-		#click_position = get_global_mouse_position()
-		#
-	#if position.distance_to(click_position) > 3:
-		#target_position = (click_position - position).normalized()
-		#velocity = target_position* speed
-		#move_and_slide()
-		#
-#
-###Player Movement by Mouse Click : END
-
+func switch_direction(h_direction):
+	sprite.flip_h = (h_direction == -1)
+	sprite.position.x  = h_direction * 6
 
 
 
