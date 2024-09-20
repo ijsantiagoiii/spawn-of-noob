@@ -13,10 +13,10 @@ func _physics_process(delta: float) -> void:
 	pass
 	
 func _process(delta: float) -> void:
-	if !is_on_floor():
-		velocity.y += gravity
-		if velocity.y > max_gforce:
-			velocity.y = max_gforce
+	#if !is_on_floor():
+		#velocity.y += gravity
+		#if velocity.y > max_gforce:
+			#velocity.y = max_gforce
 
 	if Input.is_action_just_pressed("jump") && is_on_floor():
 		velocity.y = jump_force
