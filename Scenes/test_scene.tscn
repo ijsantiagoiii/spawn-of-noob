@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dry5a2ufngc3e"]
 
-[ext_resource type="PackedScene" uid="uid://cvhg5cv0hc5d3" path="res://Scenes/knight.tscn" id="2_oc0tu"]
+[ext_resource type="PackedScene" uid="uid://co1vongrw1ccj" path="res://Scenes/clayman.tscn" id="1_nbtnv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l1q30"]
 size = Vector2(543.5, 42)
@@ -9,9 +9,6 @@ size = Vector2(543.5, 42)
 size = Vector2(88, 66)
 
 [node name="World" type="Node2D"]
-
-[node name="Knight" parent="." instance=ExtResource("2_oc0tu")]
-position = Vector2(287, 289)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(35, 119)
@@ -43,3 +40,6 @@ shape = SubResource("RectangleShape2D_kpj5d")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
 position = Vector2(137, 102)
 shape = SubResource("RectangleShape2D_kpj5d")
+
+[node name="Clayman" parent="." instance=ExtResource("1_nbtnv")]
+position = Vector2(268, 342)
